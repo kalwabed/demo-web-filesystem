@@ -1,10 +1,13 @@
 <script>
 import { onMount } from 'svelte'
+import { init } from 'pell'
 
-let fileName = ''
 let fileContent = ''
-let showedFileContent = ''
+let isNewFile = false
+let newFilenameInput = ''
 let files = []
+let editor = null
+let selectedFilename = ''
 
 async function getFileHandle(name, props) {
   const dirHandle = await getDirHandle()
@@ -21,9 +24,11 @@ async function getDirHandle(props) {
 }
 
 async function createFile() {
-  const fileHandle = await getFileHandle(fileName,{create: true})
+  const fileHandle = await getFileHandle(newFilenameInput,{create: true})
   await showListOfFile()
-  console.log(fileHandle)
+  toggleInputFilename()
+  newFilenameInput = ''
+  
   return fileHandle
 }
 
@@ -39,14 +44,14 @@ async function showListOfFile() {
 }
 
 async function getFile(name) {
-  const fileHandle = await getFileHandle(name??fileName)
+  const fileHandle = await getFileHandle(name??newFilenameInput)
   const file = await fileHandle.getFile()
   
   return file
 }
 
 async function writeToFile() {
-  const file = await getFileHandle()
+  const file = await getFileHandle(selectedFilename)
   const writable = await file.createWritable()
 
   await writable.write(fileContent)
@@ -54,30 +59,65 @@ async function writeToFile() {
 }
 
 async function showFileContent(name) {
+  selectedFilename = name
   const file = await getFile(name)
   const text= await file.text()
 
-  showedFileContent = text
+  fileContent = text
+  editor.content.innerHTML = text
+}
+
+function toggleInputFilename() {
+  if (!isNewFile) {
+    setTimeout(() => {
+      document.getElementById('input-filename').focus()
+    }, 50)
+  }
+  isNewFile = !isNewFile
 }
 
 onMount(async ()=> {
+  editor = init({
+    element: document.getElementById('pell'),
+    onChange: html => {
+      fileContent = html
+    },
+    styleWithCSS: true,
+    actions: [
+      'bold',
+      'italic'
+    ]
+  })
+
   await showListOfFile()
-  console.log(files)
 })
 </script>
 
-<main>
-  <ul>
-    {#each files as filename}
-      <li>
-        <button on:click={()=>showFileContent(filename)}>{filename}</button>
-      </li>
-    {/each}
-  </ul>
-  <input bind:value={fileName} placeholder="Input file name"  />
-  <input bind:value={fileContent} placeholder="Input content"  />
-  <button on:click={createFile}>Add file</button>
-  <button on:click={writeToFile}>Insert to file</button>
-  <button on:click={getFile}>Get file</button>
-  <textarea bind:value={showedFileContent} />
+<main class="flex mt10 max-w-screen-xl mx-auto">
+  <div class="b b-gray3 mr8 rd shadow w-35rem">
+    <div class="flex py3 px2">
+        <button class:hidden={isNewFile} class="py1 px4 bg-gray50 b b-gray3 hover:bg-gray2 c-gray9 rd transition font-semibold text-sm" on:click={toggleInputFilename}>New file</button>
+        <input class:hidden={!isNewFile} on:keydown={key=>key.code === 'Enter' ? createFile():null} bind:value={newFilenameInput} class="wfull py1 px2 b rd outline-none focus:ring-2" id="input-filename" placeholder="New file name" />
+  </div>
+    <ul class="flex flex-col b-t b-t-gray3">
+      {#if files.length === 0}
+      	<p class="c-gray text-sm mx-auto py8">Empty</p>
+      {/if}
+      {#each files as filename}
+        <li >
+          <button class={`p2 wfull text-left hover:bg-gray2 transition c-gray9 focus:ring-2 ${selectedFilename === filename ? 'bg-pink2 c-pink9 hover:bg-pink-3' : ''}`} on:click={()=>showFileContent(filename)}>{filename}</button>
+        </li>
+      {/each}
+    </ul>
+  </div>
+  <div  class="b b-gray-3 rd shadow p4 wfull">
+    <div id="pell"></div>
+    <button class="bg-blue2 px4 py1 font-semibold text-sm b b-blue3 rd text-center c-blue9 hover:bg-blue3 transition" on:click={writeToFile}>Save</button>
+  </div>
 </main>
+
+<style>
+:global(html,body,#app) {
+  height: 100%;
+}
+</style>
