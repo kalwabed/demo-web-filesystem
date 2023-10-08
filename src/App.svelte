@@ -24,6 +24,11 @@ async function getDirHandle(props) {
 }
 
 async function createFile() {
+  if (!newFilenameInput) {
+    toggleInputFilename()
+    return
+  }
+
   const fileHandle = await getFileHandle(newFilenameInput,{create: true})
   await showListOfFile()
   toggleInputFilename()
@@ -56,6 +61,8 @@ async function writeToFile() {
 
   await writable.write(fileContent)
   await writable.close()
+
+  alert('File saved!')
 }
 
 async function showFileContent(name) {
@@ -68,12 +75,21 @@ async function showFileContent(name) {
 }
 
 function toggleInputFilename() {
+  selectedFilename = ''
   if (!isNewFile) {
     setTimeout(() => {
       document.getElementById('input-filename').focus()
     }, 50)
   }
   isNewFile = !isNewFile
+}
+
+async function deleteFile() {
+  const file = await getFileHandle(selectedFilename)
+  await file.remove()
+  alert('File has been removed!')
+  selectedFilename = ''
+  await showListOfFile()
 }
 
 onMount(async ()=> {
@@ -85,7 +101,10 @@ onMount(async ()=> {
     styleWithCSS: true,
     actions: [
       'bold',
-      'italic'
+      'italic',
+      'code',
+      'underline',
+      'strikethrough',
     ]
   })
 
@@ -93,10 +112,11 @@ onMount(async ()=> {
 })
 </script>
 
-<main class="flex mt10 max-w-screen-xl mx-auto">
+<main class="flex mt10 max-w-screen-xl mx-auto h-400px">
   <div class="b b-gray3 mr8 rd shadow w-35rem">
-    <div class="flex py3 px2">
+    <div class="flex py3 px2 justify-between">
         <button class:hidden={isNewFile} class="py1 px4 bg-gray50 b b-gray3 hover:bg-gray2 c-gray9 rd transition font-semibold text-sm" on:click={toggleInputFilename}>New file</button>
+        <button class:hidden={!selectedFilename} class="py1 px4 bg-red6 b b-red7 hover:bg-red8 c-red1 rd transition font-semibold text-sm" on:click={deleteFile}>Delete</button>
         <input class:hidden={!isNewFile} on:keydown={key=>key.code === 'Enter' ? createFile():null} bind:value={newFilenameInput} class="wfull py1 px2 b rd outline-none focus:ring-2" id="input-filename" placeholder="New file name" />
   </div>
     <ul class="flex flex-col b-t b-t-gray3">
@@ -110,9 +130,11 @@ onMount(async ()=> {
       {/each}
     </ul>
   </div>
-  <div  class="b b-gray-3 rd shadow p4 wfull">
-    <div id="pell"></div>
-    <button class="bg-blue2 px4 py1 font-semibold text-sm b b-blue3 rd text-center c-blue9 hover:bg-blue3 transition" on:click={writeToFile}>Save</button>
+  <div class="b b-gray-3 rd shadow p4 wfull">
+    <div class:hidden={!selectedFilename}>
+      <div id="pell"></div>
+      <button class="bg-blue2 px4 py1 font-semibold text-sm b b-blue3 rd text-center c-blue9 hover:bg-blue3 transition" on:click={writeToFile}>Save</button>
+    </div>
   </div>
 </main>
 
