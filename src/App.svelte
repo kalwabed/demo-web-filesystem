@@ -1,6 +1,7 @@
 <script>
 import { onMount } from 'svelte'
 import { init } from 'pell'
+import Footer from './lib/footer.svelte';
 
 let fileContent = ''
 let isNewFile = false
@@ -112,11 +113,17 @@ onMount(async ()=> {
 })
 </script>
 
-<main class="flex mt10 max-w-screen-xl mx-auto h-420px">
+<header>
+  <p class="px4 mt2 c-gray text-sm text-center italic">
+    Web API Filesystem utilization demo with document editing case study using Original Private File System (OPFS) concept
+  </p>
+</header>
+
+<main class="flex mt10 max-w-screen-xl wfull mx-auto h-420px">
   <div class="b b-gray3 mr8 rd shadow w-35rem">
     <div class="flex py3 px2 justify-between">
-        <button class:hidden={isNewFile} class="py1 px4 bg-gray50 b b-gray3 hover:bg-gray2 c-gray9 rd transition font-semibold text-sm" on:click={toggleInputFilename}>New file</button>
-        <button class:hidden={!selectedFilename} class="py1 px4 bg-red6 b b-red7 hover:bg-red8 c-red1 rd transition font-semibold text-sm" on:click={deleteFile}>Delete</button>
+        <button  class={`py1 px4 bg-gray2 b b-gray3 hover:bg-gray3 c-gray9 rd transition font-semibold text-sm items-center gap-2 ${!isNewFile ? 'inline-flex' : 'hidden'}`} on:click={toggleInputFilename}>New file <i class="i-ph:plus block"/></button>
+        <button  class={`py1 px4 bg-red6 b b-red7 hover:bg-red8 c-red1 rd transition font-semibold text-sm items-center gap-2 ${selectedFilename ? 'inline-flex' : 'hidden'}`} on:click={deleteFile}>Delete <i class="i-ph:trash block"/></button>
         <input class:hidden={!isNewFile} on:keydown={key=>key.code === 'Enter' ? createFile():null} bind:value={newFilenameInput} class="wfull py1 px2 b rd outline-none focus:ring-2" id="input-filename" placeholder="New file name" />
   </div>
     <ul class="flex flex-col b-t b-t-gray3">
@@ -142,8 +149,15 @@ onMount(async ()=> {
   </div>
 </main>
 
+<Footer/>
+
 <style>
 :global(html,body,#app) {
   height: 100%;
+}
+
+:global(#app) {
+  display: flex;
+  flex-direction: column;
 }
 </style>
