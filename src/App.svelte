@@ -112,7 +112,7 @@ onMount(async ()=> {
 })
 </script>
 
-<main class="flex mt10 max-w-screen-xl mx-auto h-400px">
+<main class="flex mt10 max-w-screen-xl mx-auto h-420px">
   <div class="b b-gray3 mr8 rd shadow w-35rem">
     <div class="flex py3 px2 justify-between">
         <button class:hidden={isNewFile} class="py1 px4 bg-gray50 b b-gray3 hover:bg-gray2 c-gray9 rd transition font-semibold text-sm" on:click={toggleInputFilename}>New file</button>
@@ -125,15 +125,19 @@ onMount(async ()=> {
       {/if}
       {#each files as filename}
         <li >
-          <button class={`p2 wfull text-left hover:bg-gray2 transition c-gray9 focus:ring-2 ${selectedFilename === filename ? 'bg-pink2 c-pink9 hover:bg-pink-3' : ''}`} on:click={()=>showFileContent(filename)}>{filename}</button>
+          <button class={`p2 wfull text-left hover:bg-pink3 transition c-pink9 inline-flex items-center gap2 ${selectedFilename === filename ? 'bg-pink2 hover:bg-pink-3' : ''}`} on:click={()=>showFileContent(filename)}><i class="i-ph:file block"/> {filename}</button>
         </li>
       {/each}
     </ul>
   </div>
-  <div class="b b-gray-3 rd shadow p4 wfull">
+  <div class="b b-gray-3 rd shadow p4 wfull hfull">
+    <p class:hidden={selectedFilename} class="c-gray text-center text-sm">Here we go. Welcome!!</p>
     <div class:hidden={!selectedFilename}>
-      <div id="pell"></div>
-      <button class="bg-blue2 px4 py1 font-semibold text-sm b b-blue3 rd text-center c-blue9 hover:bg-blue3 transition" on:click={writeToFile}>Save</button>
+      <div id="pell" class="shadow b b-gray2"></div>
+      <div class="flex items-center gap4 pt4">
+        <button class="bg-zinc2 px4 py1 font-semibold text-sm b b-zinc3 rd text-center c-zinc9 hover:bg-zinc3 transition" on:click={() => selectedFilename = ''}>Cancel</button>
+        <button class="bg-blue2 px4 py1 font-semibold text-sm b b-blue3 rd text-center c-blue9 hover:bg-blue3 transition" on:click={writeToFile}>Save</button>
+      </div>
     </div>
   </div>
 </main>

@@ -1,4 +1,4 @@
-import { defineConfig, presetUno } from 'unocss'
+import { defineConfig, presetUno, presetIcons } from 'unocss'
 import extractorSvelte from '@unocss/extractor-svelte'
 
 export default defineConfig({
@@ -7,5 +7,8 @@ export default defineConfig({
 	],
   presets: [
     presetUno(),
+		presetIcons({
+			cdn: 'https://esm.sh/'
+		})
   ],
 })
