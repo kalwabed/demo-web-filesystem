@@ -2,6 +2,7 @@
 import { onMount } from 'svelte'
 import { init } from 'pell'
 import Footer from './lib/footer.svelte';
+import Header from './lib/header.svelte';
 
 let fileContent = ''
 let isNewFile = false
@@ -113,13 +114,7 @@ onMount(async ()=> {
 })
 </script>
 
-<header class="flex flex-col wfull">
-  <span class="bg-red wfull p1 shadow"></span>
-  <p class="px4 mt2 c-gray text-sm text-center italic">
-    Web API Filesystem utilization demo with document editing case study using Original Private File System (OPFS) concept
-  </p>
-</header>
-
+<Header />
 <main class="flex flex-col md:flex-row gap8 mt10 max-w-screen-xl wfull mx-auto md:h-420px min-h-xl px4 md:px0">
   <div class="b b-gray3 rd shadow wfull h-550px overflow-y-auto md:w-35rem md:h-auto">
     <div class="flex py3 px2 justify-between">
