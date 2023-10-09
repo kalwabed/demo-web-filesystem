@@ -118,7 +118,7 @@ onMount(async ()=> {
 </script>
 
 <Header />
-<main class="flex flex-col md:flex-row gap8 md:gap0 mt10 max-w-screen-xl wfull mx-auto md:h-420px min-h-xl px4 md:px0">
+<main class="flex flex-col md:flex-row gap8 md:gap0 mt10 max-w-screen-xl wfull mx-auto md:h-xl h-3xl px4 md:px0">
   <div class="b b-zinc7 rd md:(rd-r-0 rd-l) shadow bg-zinc9 wfull h-550px overflow-y-auto md:w-35rem md:h-auto">
     <div class="flex py3 px2 justify-between">
         <button class={`py1 px4 bg-neutral9 b b-neutral6 hover:bg-neutral8 c-neutral1 rd transition font-semibold text-sm items-center gap-2 ${!isNewFile ? 'inline-flex' : 'hidden'}`} on:click={toggleInputFilename}>New file <i class="i-ph:plus block"/></button>
@@ -158,12 +158,15 @@ onMount(async ()=> {
 }
 
 :global(#app) {
+  display: flex;
+  flex-direction: column;
+}
+
+:global(body) {
   background-image: url(/bg.svg);
   object-position: center;
   object-fit: fill;
   background-color: black;
-  display: flex;
-  flex-direction: column;
 }
 
 :global(.pell-actionbar) {
