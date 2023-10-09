@@ -121,9 +121,10 @@ onMount(async ()=> {
 <main class="flex flex-col md:flex-row gap8 md:gap0 mt10 max-w-screen-xl wfull mx-auto md:h-420px min-h-xl px4 md:px0">
   <div class="b b-zinc7 rd md:(rd-r-0 rd-l) shadow bg-zinc9 wfull h-550px overflow-y-auto md:w-35rem md:h-auto">
     <div class="flex py3 px2 justify-between">
-        <button  class={`py1 px4 bg-gray9 b b-gray6 hover:bg-gray8 c-gray1 rd transition font-semibold text-sm items-center gap-2 ${!isNewFile ? 'inline-flex' : 'hidden'}`} on:click={toggleInputFilename}>New file <i class="i-ph:plus block"/></button>
-        <button  class={`py1 px4 bg-red8 b b-red5 hover:bg-red7 c-red1 rd transition font-semibold text-sm items-center gap-2 ${selectedFilename ? 'inline-flex' : 'hidden'}`} on:click={deleteFile}>Delete <i class="i-ph:trash block"/></button>
+        <button class={`py1 px4 bg-neutral9 b b-neutral6 hover:bg-neutral8 c-neutral1 rd transition font-semibold text-sm items-center gap-2 ${!isNewFile ? 'inline-flex' : 'hidden'}`} on:click={toggleInputFilename}>New file <i class="i-ph:plus block"/></button>
+        <button class={`py1 px4 bg-red8 b b-red5 hover:bg-red7 c-red1 rd transition font-semibold text-sm items-center gap-2 ${selectedFilename ? 'inline-flex' : 'hidden'}`} on:click={deleteFile}>Delete <i class="i-ph:trash block"/></button>
         <input class:hidden={!isNewFile} on:keydown={key=>key.code === 'Enter' ? createFile():null} bind:value={newFilenameInput} class="wfull py1 px2 b rd outline-none focus:ring-2 bg-zinc-8 b-zinc-7 c-zinc-1" id="input-filename" placeholder="New file name" />
+        <button class={`py1 px4 ml2 bg-neutral9 b b-neutral6 hover:bg-neutral8 c-neutral1 rd transition font-semibold text-sm items-center gap-2 ${isNewFile ? 'inline-flex' : 'hidden'}`} on:click={createFile}>Add</button>
   </div>
     <ul class="flex flex-col b-t b-t-zinc7">
       {#if files.length === 0}
