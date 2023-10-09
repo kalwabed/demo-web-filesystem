@@ -107,7 +107,10 @@ onMount(async ()=> {
       'code',
       'underline',
       'strikethrough',
-    ]
+    ],
+    classes: {
+      actionbar: 'pell-actionbar'
+    }
   })
 
   await showListOfFile()
@@ -115,31 +118,32 @@ onMount(async ()=> {
 </script>
 
 <Header />
-<main class="flex flex-col md:flex-row gap8 mt10 max-w-screen-xl wfull mx-auto md:h-420px min-h-xl px4 md:px0">
-  <div class="b b-gray3 rd shadow wfull h-550px overflow-y-auto md:w-35rem md:h-auto">
+<main class="flex flex-col md:flex-row gap8 md:gap0 mt10 max-w-screen-xl wfull mx-auto md:h-420px min-h-xl px4 md:px0">
+  <div class="b b-zinc7 rd-l shadow bg-zinc9 wfull h-550px overflow-y-auto md:w-35rem md:h-auto">
     <div class="flex py3 px2 justify-between">
-        <button  class={`py1 px4 bg-gray2 b b-gray3 hover:bg-gray3 c-gray9 rd transition font-semibold text-sm items-center gap-2 ${!isNewFile ? 'inline-flex' : 'hidden'}`} on:click={toggleInputFilename}>New file <i class="i-ph:plus block"/></button>
-        <button  class={`py1 px4 bg-red6 b b-red7 hover:bg-red8 c-red1 rd transition font-semibold text-sm items-center gap-2 ${selectedFilename ? 'inline-flex' : 'hidden'}`} on:click={deleteFile}>Delete <i class="i-ph:trash block"/></button>
-        <input class:hidden={!isNewFile} on:keydown={key=>key.code === 'Enter' ? createFile():null} bind:value={newFilenameInput} class="wfull py1 px2 b rd outline-none focus:ring-2" id="input-filename" placeholder="New file name" />
+        <button  class={`py1 px4 bg-gray9 b b-gray6 hover:bg-gray8 c-gray1 rd transition font-semibold text-sm items-center gap-2 ${!isNewFile ? 'inline-flex' : 'hidden'}`} on:click={toggleInputFilename}>New file <i class="i-ph:plus block"/></button>
+        <button  class={`py1 px4 bg-red8 b b-red5 hover:bg-red7 c-red1 rd transition font-semibold text-sm items-center gap-2 ${selectedFilename ? 'inline-flex' : 'hidden'}`} on:click={deleteFile}>Delete <i class="i-ph:trash block"/></button>
+        <input class:hidden={!isNewFile} on:keydown={key=>key.code === 'Enter' ? createFile():null} bind:value={newFilenameInput} class="wfull py1 px2 b rd outline-none focus:ring-2 bg-zinc-8 b-zinc-7 c-zinc-1" id="input-filename" placeholder="New file name" />
   </div>
-    <ul class="flex flex-col b-t b-t-gray3">
+    <ul class="flex flex-col b-t b-t-zinc7">
       {#if files.length === 0}
       	<p class="c-gray text-sm mx-auto py8">Empty</p>
       {/if}
       {#each files as filename}
         <li >
-          <button class={`p2 wfull text-left hover:bg-pink3 transition c-pink9 inline-flex items-center gap2 ${selectedFilename === filename ? 'bg-pink2 hover:bg-pink-3' : ''}`} on:click={()=>showFileContent(filename)}><i class="i-ph:file block"/> {filename}</button>
+          <button class={`p2 wfull text-left hover:bg-violet8 c-violet1 inline-flex items-center gap2 ${selectedFilename === filename ? 'bg-violet9 hover:bg-violet-9' : ''}`} on:click={()=>showFileContent(filename)}><i class="i-ph:file block"/> {filename}</button>
         </li>
       {/each}
     </ul>
   </div>
-  <div class="b b-gray-3 rd shadow p4 wfull hfull">
-    <p class:hidden={selectedFilename} class="c-gray text-center text-sm">Here we go. Welcome!!</p>
+  <div class="b b-zinc-7 rd-r shadow p4 wfull hfull bg-zinc9 c-zinc1">
+    <p class:hidden={selectedFilename} class="c-gray text-center text-sm mt-1/3">Welcome! Click any file to edit</p>
     <div class:hidden={!selectedFilename}>
-      <div id="pell" class="shadow b b-gray2"></div>
+      <b class="text-2xl">{selectedFilename}</b>
+      <div id="pell" class="shadow b b-zinc7 mt4"></div>
       <div class="flex items-center gap4 pt4">
-        <button class="bg-zinc2 px4 py1 font-semibold text-sm b b-zinc3 rd text-center c-zinc9 hover:bg-zinc3 transition" on:click={() => selectedFilename = ''}>Cancel</button>
-        <button class="bg-blue2 px4 py1 font-semibold text-sm b b-blue3 rd text-center c-blue9 hover:bg-blue3 transition" on:click={writeToFile}>Save</button>
+        <button class="bg-zinc8 px4 py1 font-semibold text-sm b b-zinc5 rd text-center c-zinc1 hover:bg-zinc7 transition" on:click={() => selectedFilename = ''}>Cancel</button>
+        <button class="bg-blue8 px4 py1 font-semibold text-sm b b-blue5 rd text-center c-blue1 hover:bg-blue7 transition" on:click={writeToFile}>Save</button>
       </div>
     </div>
   </div>
@@ -153,7 +157,20 @@ onMount(async ()=> {
 }
 
 :global(#app) {
+  background-image: url(/bg.svg);
+  object-position: center;
+  object-fit: fill;
+  background-color: black;
   display: flex;
   flex-direction: column;
+}
+
+:global(.pell-actionbar) {
+  background-color: #27272a;
+  border-color: #334155;
+}
+
+:global(.pell-button-selected) {
+  background-color: #334155;
 }
 </style>
