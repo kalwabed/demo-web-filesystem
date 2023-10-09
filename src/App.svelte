@@ -119,7 +119,7 @@ onMount(async ()=> {
 
 <Header />
 <main class="flex flex-col md:flex-row gap8 md:gap0 mt10 max-w-screen-xl wfull mx-auto md:h-420px min-h-xl px4 md:px0">
-  <div class="b b-zinc7 rd-l shadow bg-zinc9 wfull h-550px overflow-y-auto md:w-35rem md:h-auto">
+  <div class="b b-zinc7 rd md:(rd-r-0 rd-l) shadow bg-zinc9 wfull h-550px overflow-y-auto md:w-35rem md:h-auto">
     <div class="flex py3 px2 justify-between">
         <button  class={`py1 px4 bg-gray9 b b-gray6 hover:bg-gray8 c-gray1 rd transition font-semibold text-sm items-center gap-2 ${!isNewFile ? 'inline-flex' : 'hidden'}`} on:click={toggleInputFilename}>New file <i class="i-ph:plus block"/></button>
         <button  class={`py1 px4 bg-red8 b b-red5 hover:bg-red7 c-red1 rd transition font-semibold text-sm items-center gap-2 ${selectedFilename ? 'inline-flex' : 'hidden'}`} on:click={deleteFile}>Delete <i class="i-ph:trash block"/></button>
@@ -136,7 +136,7 @@ onMount(async ()=> {
       {/each}
     </ul>
   </div>
-  <div class="b b-zinc-7 rd-r shadow p4 wfull hfull bg-zinc9 c-zinc1">
+  <div class="b b-zinc-7 rd md:(rd-l-0 rd-r) shadow p4 wfull hfull bg-zinc9 c-zinc1">
     <p class:hidden={selectedFilename} class="c-gray text-center text-sm mt-1/3">Welcome! Click any file to edit</p>
     <div class:hidden={!selectedFilename}>
       <b class="text-2xl">{selectedFilename}</b>
