@@ -113,14 +113,15 @@ onMount(async ()=> {
 })
 </script>
 
-<header>
+<header class="flex flex-col wfull">
+  <span class="bg-red wfull p1 shadow"></span>
   <p class="px4 mt2 c-gray text-sm text-center italic">
     Web API Filesystem utilization demo with document editing case study using Original Private File System (OPFS) concept
   </p>
 </header>
 
-<main class="flex mt10 max-w-screen-xl wfull mx-auto h-420px">
-  <div class="b b-gray3 mr8 rd shadow w-35rem">
+<main class="flex flex-col md:flex-row gap8 mt10 max-w-screen-xl wfull mx-auto md:h-420px min-h-xl px4 md:px0">
+  <div class="b b-gray3 rd shadow wfull h-550px overflow-y-auto md:w-35rem md:h-auto">
     <div class="flex py3 px2 justify-between">
         <button  class={`py1 px4 bg-gray2 b b-gray3 hover:bg-gray3 c-gray9 rd transition font-semibold text-sm items-center gap-2 ${!isNewFile ? 'inline-flex' : 'hidden'}`} on:click={toggleInputFilename}>New file <i class="i-ph:plus block"/></button>
         <button  class={`py1 px4 bg-red6 b b-red7 hover:bg-red8 c-red1 rd transition font-semibold text-sm items-center gap-2 ${selectedFilename ? 'inline-flex' : 'hidden'}`} on:click={deleteFile}>Delete <i class="i-ph:trash block"/></button>
